@@ -187,6 +187,25 @@ namespace FarmTypeManager
             public SavedObject()
             {
             }
+
+            /// <summary>Creates a deep copy of this SavedObject. Faster alternative to JSON-based cloning.</summary>
+            /// <returns>A new SavedObject with identical property values.</returns>
+            public SavedObject DeepCopy()
+            {
+                SavedObject copy = new()
+                {
+                    MapName = MapName,
+                    Name = Name,
+                    Tile = Tile, //Vector2 is a value type
+                    Type = Type, //enum is a value type
+                    ID = ID, //null, boxed int, or string (immutable) -- safe to share reference
+                    DaysUntilExpire = DaysUntilExpire,
+                    SpawnTime = SpawnTime, //StardewTime is a struct (value type)
+                    ConfigItem = ConfigItem?.DeepCopy(),
+                    MonType = MonType?.DeepCopy()
+                };
+                return copy;
+            }
         }
     }
 }
